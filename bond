@@ -1,0 +1,60 @@
+$ sudo apt install ifenslave
+$ sudo nano /etc/modules
+$ sudo apt install lldpd
+# add "bonding" to empty lines blow
+
+
+
+$ sudo nano /etc/netplan/00-installer-config.yaml
+# config netplan file like this:
+_________________________________________
+
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eno49:
+      dhcp4: no
+    eno50:
+      dhcp4: no
+  bonds:
+    bond0:
+      mtu: 9216
+      interfaces: [eno49, eno50]
+      parameters:
+        mode: 802.3ad
+        transmit-hash-policy: layer3+4
+        mii-monitor-interval: 1
+  vlans:
+    bond0.140:
+      id: 140
+      link: bond0
+      mtu: 9216
+      addresses: [172.16.134.20/23]
+      gateway4: 172.16.135.254
+      nameservers:
+        addresses:
+          - 217.182.103.47
+    bond0.420:
+      id: 420
+      link: bond0
+      mtu: 9216
+      addresses: [172.16.168.20/23]
+    bond0.421:
+      id: 421
+      link: bond0
+      mtu: 9216
+      addresses: [172.16.172.20/23]
+  version: 2
+________________________________________  
+
+$ sudo modprobe bonding
+$ sudo netplan apply
+
+#for confirming the configuration
+
+$ sudo lldpcli
+> show neighbors
+
+#to see bandwidth
+$ ethtool bond0
