@@ -1,10 +1,8 @@
 #Bonding (NIC Teaming) LACP
 $ sudo apt install ifenslave
-$ sudo nano /etc/modules
 $ sudo apt install lldpd
+$ sudo nano /etc/modules
 # add "bonding" to empty lines blow
-
-
 
 $ sudo nano /etc/netplan/00-installer-config.yaml
 # config netplan file like this:
