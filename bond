@@ -1,3 +1,4 @@
+#Bonding (NIC Teaming) LACP
 $ sudo apt install ifenslave
 $ sudo nano /etc/modules
 $ sudo apt install lldpd
